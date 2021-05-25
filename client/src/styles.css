@@ -1,0 +1,46 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+table {
+    margin: 10px;
+}
+
+
+tr:first-child td {
+    border-top-color:black;
+}
+
+tr:nth-child(3n) td {
+    border-bottom-color:black;
+}
+
+td {
+    width: 60px;
+    height: 60px;
+    margin: 0;
+    padding: 0;
+    border: 1px solid lightgray;
+}
+
+td:first-child {
+    border-left-color: black;
+}
+
+td:nth-child(3n) {
+    border-right-color: black;
+}
+
+.cell {
+    width: 60px;
+    height: 60px;
+    padding: 10px;
+    margin: 0;
+    border: none;
+    outline: none;
+    background: none;
+    text-align: center;
+}
+

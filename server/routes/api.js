@@ -1,5 +1,3 @@
-'use strict';
-
 const SudokuSolver = require('../controllers/sudoku-solver.js');
 
 module.exports = function (app) {
