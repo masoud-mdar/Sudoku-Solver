@@ -13,7 +13,7 @@ const Square = (props) => {
         let n = indexFinder - 8
 
         while (n <= indexFinder) {
-            let item = <td key={Math.random() * Math.random()}><input type="text" key={Math.random() * Math.random()} id={`${row}${n}`} onChange={props.data.handleChange} value={props.data.cellInput[n]} name="cell" className="cell"></input></td>
+            let item = <td key={Math.random() * Math.random()}><span><div className="warning"></div><input type="text" key={Math.random() * Math.random()} id={`${row}${n}`} onChange={props.data.handleChange} value={props.data.cellInput[n]} name="cell" className="cell"></input></span></td>
             tempArr.push(item)
             n++
         }

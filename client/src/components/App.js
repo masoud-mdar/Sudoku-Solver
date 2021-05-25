@@ -37,7 +37,7 @@ const App = () => {
 
             tempInputArr[id].shift()
             let onePartValueArr = value.split("")
-            let onePartValue = onePartValueArr[onePartValueArr.length-1]
+            let onePartValue = onePartValueArr.length > 1 ? onePartValueArr[onePartValueArr.length-1] : value
             tempInputArr[id].push(onePartValue)
 
             setCellInput(tempInputArr)
