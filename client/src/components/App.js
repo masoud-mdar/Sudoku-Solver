@@ -8,8 +8,15 @@ import {puzzlesAndSolutions} from "../utils/puzzles"
 
 const App = () => {
 
-    const [cellInput, setCellInput] = useState([])
+    const [cellInput, setCellInput] = useState([])  // an array of 81 array inputs
     const [selectedPuzzle, setSelectedPuzzle] = useState("")
+
+    //const [selectedCellId, setSelectedCellId] = useState("")
+    //const [selectedCellRaw, setSelectedCellRaw] = useState("")
+
+    //const [selectedCell, setSelectedCell] = useState("")
+
+    const [checkResult, setCheckResult] = useState({})
 
     useEffect(() => {
         let tempArr = []
@@ -22,59 +29,64 @@ const App = () => {
     useEffect(() => {
         setSelectedPuzzle(puzzlesAndSolutions[0][0])
     }, [])
+    
 
-    const handleClick = () => {
+    const handleClick = (Event) => {
+        const {name, value, id} = Event.target
+        console.log(id)
+        console.log(value)
+
+
+        //setSelectedCell(id)
+        //setSelectedCellId(id.split("").splice(1,1).join(""))
+        //setSelectedCellRaw(id.split("").splice(0,1).join(""))
 
     }
 
     const handleChange = (Event) => {
+        console.log("rrrr")
         const {name, value} = Event.target
-        const coordId = Event.target.id
-        console.log(coordId)
-        console.log(value)
 
         if (name === "cell") {
-            let tempArr = coordId.split("")
-            tempArr.shift()
-            const id = tempArr.join("")
-            //console.log(id)
 
-            let tempInputArr = []
+            if (/[1-9]/.test(value)) {
 
-            for (let i=0; i<cellInput.length; i++) {
-                tempInputArr.push(cellInput[i])
+                const rawId = Event.target.id
+
+                let coordinate = rawId.split("").slice(0,2).join("")
+    
+                let inputIndex = rawId.split("").slice(2).join("")
+    
+                let tempInputArr = JSON.parse(JSON.stringify(cellInput))
+    
+                tempInputArr[inputIndex].splice(0)
+    
+                //let onePartValue = value.split("").length > 1 ? value.split("")[value.split("").length-1] : value
+                let onePartValue = value
+    
+                tempInputArr[inputIndex].push(onePartValue)
+
+                setCellInput(tempInputArr)
+
+                let sendingData = {
+                    puzzle: selectedPuzzle,
+                    coordinate: coordinate,
+                    value: onePartValue
+                }
+
+                axios.post(`${BASE_URL}/api/check`, sendingData).then(response => {
+                    const {data} = response
+                    console.log(data)
+                    setCheckResult(data)
+                })
+
+
+
             }
-
-            tempInputArr[id].shift()
-            let onePartValueArr = value.split("")
-            let onePartValue = onePartValueArr.length > 1 ? onePartValueArr[onePartValueArr.length-1] : value
-            tempInputArr[id].push(onePartValue)
-
-            let coordIdArr = coordId.split("")
-            if (coordIdArr.length > 2) {
-                coordIdArr.splice(1,2, (parseInt(id) - 8))
-
-            }
-
-            let finalCoordId = coordIdArr.join("")
-
-            let sendingData = {
-                puzzle: selectedPuzzle,
-                coordinate: finalCoordId,
-                value: onePartValue
-            }
-
-            axios.post(`${BASE_URL}/api/check`, sendingData).then(response => {
-                const {data} = response
-                console.log(data)
-            })
-
-            setCellInput(tempInputArr)
 
         }
     }
 
-    //console.log(selectedPuzzle)
 
 
     return (
@@ -82,8 +94,10 @@ const App = () => {
             <Square
                 data={{
                     handleChange: handleChange,
+                    handleClick: handleClick,
                     cellInput: cellInput,
-                    selectedPuzzle: selectedPuzzle
+                    selectedPuzzle: selectedPuzzle,
+                    checkResult: checkResult
                 }}
             />
         </div>

@@ -4,6 +4,11 @@
     box-sizing: border-box;
 }
 
+.table-wrapper {
+    width: 600px;
+    height: 600px;
+}
+
 table {
     margin: 10px;
 }
@@ -36,11 +41,20 @@ td:nth-child(3n) {
 .cell {
     width: 60px;
     height: 60px;
-    padding: 10px;
     margin: 0;
-    border: none;
+    border: 0;
     outline: none;
     background: none;
     text-align: center;
+    cursor:default;
+}
+
+.table-span {
+    width: 60px;
+    height: 60px;
+}
+
+.table-span div {
+    display: none;
 }
 
