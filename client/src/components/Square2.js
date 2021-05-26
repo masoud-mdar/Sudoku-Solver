@@ -2,17 +2,32 @@ import React from "react"
 
 const Square = (props) => {
 
-    //const grrenStyle = {color: "blue"}
-    //const redStyle = {color: "red"}
-    const bgColor = {backgroundColor: "grey"}
 
     let tableRow = ["A","B","C","D","E","F","G","H","I"]
 
-    const {selectedPuzzle, selectedCell} = props.data
+    const {selectedPuzzle, selectedCell, checkResult, allChecks, selectedValue} = props.data
     let selectedPuzzleArr = selectedPuzzle.split("")
+
     let puzzleIndexArr = selectedPuzzleArr.map(element => {
         return element === "." ? false : true
     })
+
+    console.log(selectedCell)
+    console.log(allChecks)
+
+    let selectedColumn
+    let selectedRaw
+
+    if (selectedCell) {
+        let columnArr = selectedCell.split("")
+        selectedColumn = columnArr[1]
+        selectedRaw = columnArr[0]
+        
+    }
+
+    console.log(selectedColumn)
+
+
 
     const tableMaker = (row, d) => {
 
@@ -34,7 +49,18 @@ const Square = (props) => {
                     key={Math.random() * Math.random()} 
                     id={`${row}${indexRow}${n}`}
                     onClick={props.data.handleClick}
-                    style={selectedCell === `${row}${indexRow}${n}` ? bgColor : {}}
+                    style={{
+                        backgroundColor: selectedCell === `${row}${indexRow}${n}` ? "gray" 
+                        : selectedRaw === row ? "gray" 
+                        : selectedColumn === `${indexRow}` ? "gray"
+                        : selectedValue === props.data.cellInput[n] ? "gray"
+                        : selectedValue === selectedPuzzleArr[n] ? "gray"
+                        : "",
+
+                        color: allChecks[`${row}${indexRow}${n}`] && !allChecks[`${row}${indexRow}${n}`].valid ? "red" 
+                        : allChecks[`${row}${indexRow}${n}`] && allChecks[`${row}${indexRow}${n}`].valid ? "green" 
+                        : ""
+                    }}
                     className="cell">
 
                         {puzzleIndexArr[n] ? selectedPuzzleArr[n] : props.data.cellInput[n]}

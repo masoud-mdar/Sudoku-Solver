@@ -7,7 +7,7 @@ module.exports = function (app) {
   app.route('/api/check')
     .post((req, res) => {
       
-      let {puzzle,coordinate,value} = req.body
+      let {puzzle,coordinate,value, rawId} = req.body
       let valid = true
       let conflict = []
 
@@ -40,7 +40,7 @@ module.exports = function (app) {
                 let y = solver.checkColPlacement(puzzle, coordinateArr[0].toUpperCase(),coordinateArr[1], value)
                 let z = solver.checkRegionPlacement(puzzle, coordinateArr[0].toUpperCase(),coordinateArr[1], value)
 
-                let obj = {valid: true}
+                let obj = {valid: true, rawId: rawId}
 
                 if (!x.validation || !y.validation || !z.validation) {
                   obj.valid = false

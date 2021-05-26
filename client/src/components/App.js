@@ -12,14 +12,15 @@ const App = () => {
     const [cellInput, setCellInput] = useState([])  // an array of 81 array inputs
     const [selectedPuzzle, setSelectedPuzzle] = useState("")
 
-    //const [selectedCellId, setSelectedCellId] = useState("")
-    //const [selectedCellRaw, setSelectedCellRaw] = useState("")
-
     const [selectedCell, setSelectedCell] = useState("")
 
-    const [keyValue, setKeyValue] = useState("")
+    const [selectedValue, setSelectedValue] = useState("")
 
     const [checkResult, setCheckResult] = useState({})
+
+    const [allChecks, setAllChecks] = useState({})
+
+    //const [count, setCount] = useState(0)
 
     useEffect(() => {
         let tempArr = []
@@ -29,117 +30,131 @@ const App = () => {
         setCellInput(tempArr)
     }, [])
 
+
     useEffect(() => {
         setSelectedPuzzle(puzzlesAndSolutions[0][0])
     }, [])
 
 
 
+
     useEffect(() => {
-        
+
         const handleKeyPress = (Event) => {
             const {code} = Event
             const rawId = selectedCell
+
+            setCheckResult({})
             //console.log(rawId)
-
+    
             let value
-
+    
             switch (code) {
-
+    
                 case "Digit1":
                     value = "1"
-                    setKeyValue(value)
+                    setSelectedValue(value)
                     break
                 case "Digit2":
                     value = "2"
-                    setKeyValue(value)
+                    setSelectedValue(value)
                     break
                 case "Digit3":
                     value = "3"
-                    setKeyValue(value)
+                    setSelectedValue(value)
                     break
                 case "Digit4":
                     value = "4"
-                    setKeyValue(value)
+                    setSelectedValue(value)
                     break
                 case "Digit5":
                     value = "5"
-                    setKeyValue(value)
+                    setSelectedValue(value)
                     break
                 case "Digit6":
                     value = "6"
-                    setKeyValue(value)
+                    setSelectedValue(value)
                     break
                 case "Digit7":
                     value = "7"
-                    setKeyValue(value)
+                    setSelectedValue(value)
                     break
                 case "Digit8":
                     value = "8"
-                    setKeyValue(value)
+                    setSelectedValue(value)
                     break
                 case "Digit9":
                     value = "9"
-                    setKeyValue(value)
+                    setSelectedValue(value)
                     break
                 default:
                     console.log(code)
                     break
             }
-
+    
             let coordinate = rawId.split("").slice(0,2).join("")
     
             let inputIndex = rawId.split("").slice(2).join("")
-
+    
             let tempInputArr = JSON.parse(JSON.stringify(cellInput))
-
+    
             if (tempInputArr[inputIndex]) {
-
-                //console.log(tempInputArr[inputIndex])
-
+    
                 tempInputArr[inputIndex].splice(0)
-
+    
                 tempInputArr[inputIndex].push(value)
     
                 setCellInput(tempInputArr)
-
+    
                 let sendingData = {
                     puzzle: selectedPuzzle,
                     coordinate: coordinate,
-                    value: value
+                    value: value,
+                    rawId: rawId
                 }
-
+    
                 axios.post(`${BASE_URL}/api/check`, sendingData).then(response => {
                     const {data} = response
-                    //console.log(data)
+                    console.log(data)
                     setCheckResult(data)
+
+                    let tempObj = JSON.parse(JSON.stringify(allChecks))
+                    tempObj[rawId] = data
+                    setAllChecks(tempObj)
+
+                    //setCount(prevCount => prevCount += 1)
                 })
             }
-
-
+    
+    
         }
 
+
+        
         document.addEventListener("keydown", handleKeyPress)
 
-    }, [selectedCell, cellInput, selectedPuzzle])
+        return () => {document.removeEventListener("keydown", handleKeyPress)}
+
+
+    })
 
 
     
 
     const handleClick = (Event) => {
-        const {name, value, id} = Event.target
-
-        setKeyValue("")
+        const {id, innerHTML} = Event.target
 
         setSelectedCell(id)
+
+        setSelectedValue(innerHTML)
 
     }
 
     const handleChange = (Event) => {
         console.log("rrrr")
-        const {name, value} = Event.target
+        //const {name, value} = Event.target
 
-        if (name === "cell") {
+        /*if (name === "cell") {
 
             if (/[1-9]/.test(value)) {
 
@@ -176,7 +191,7 @@ const App = () => {
 
             }
 
-        }
+        }*/
     }
 
 
@@ -190,7 +205,9 @@ const App = () => {
                     cellInput: cellInput,
                     selectedPuzzle: selectedPuzzle,
                     checkResult: checkResult,
-                    selectedCell: selectedCell
+                    selectedCell: selectedCell,
+                    allChecks: allChecks,
+                    selectedValue: selectedValue
                 }}
             />
         </div>
