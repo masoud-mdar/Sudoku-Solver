@@ -2,13 +2,13 @@ import React from "react"
 
 const Square = (props) => {
 
-    //const grrenStyle = {"color": "blue"}
-    //const redStyle = {"color": "red"}
-    //const bgColor = {"backgroundColor": "grey"}
+    //const grrenStyle = {color: "blue"}
+    //const redStyle = {color: "red"}
+    const bgColor = {backgroundColor: "grey"}
 
     let tableRow = ["A","B","C","D","E","F","G","H","I"]
 
-    const {selectedPuzzle} = props.data
+    const {selectedPuzzle, selectedCell} = props.data
     let selectedPuzzleArr = selectedPuzzle.split("")
     let puzzleIndexArr = selectedPuzzleArr.map(element => {
         return element === "." ? false : true
@@ -28,21 +28,18 @@ const Square = (props) => {
             //console.log(indexRow)
             let item = <td key={Math.random() * Math.random()}>
                 <span className="table-span">
-                    <div className="warning-row"></div><div className="warning-col"></div><div className="warning-reg"></div>
                     
-                    <input 
-                    type="text"
+                    <div 
                     name="cell" 
                     key={Math.random() * Math.random()} 
                     id={`${row}${indexRow}${n}`}
-
-                    onChange={props.data.handleChange} 
-                    onClick={props.data.handleClick} 
-                    value={puzzleIndexArr[n] ? selectedPuzzleArr[n] : props.data.cellInput[n]}
-
+                    onClick={props.data.handleClick}
+                    style={selectedCell === `${row}${indexRow}${n}` ? bgColor : {}}
                     className="cell">
 
-                    </input>
+                        {puzzleIndexArr[n] ? selectedPuzzleArr[n] : props.data.cellInput[n]}
+
+                    </div>
                 
                 </span>
             </td>

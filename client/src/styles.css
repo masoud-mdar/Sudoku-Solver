@@ -55,6 +55,8 @@ td:nth-child(3n) {
 }
 
 .table-span div {
-    display: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
