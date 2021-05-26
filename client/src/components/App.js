@@ -10,6 +10,7 @@ import {puzzlesAndSolutions} from "../utils/puzzles"
 const App = () => {
 
     const [cellInput, setCellInput] = useState([])  // an array of 81 array inputs
+
     const [selectedPuzzle, setSelectedPuzzle] = useState("")
 
     const [selectedCell, setSelectedCell] = useState("")
@@ -20,7 +21,13 @@ const App = () => {
 
     const [allChecks, setAllChecks] = useState({})
 
-    //const [count, setCount] = useState(0)
+    const [solvedPuzzle, setSolvedPuzzle] = useState("")
+
+    const [moves, setMoves] = useState([])
+
+    const [randomMaker, setRandomMaker] = useState(0)
+
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         let tempArr = []
@@ -28,12 +35,13 @@ const App = () => {
             tempArr.push([])
         }
         setCellInput(tempArr)
-    }, [])
+    }, [randomMaker])
 
 
     useEffect(() => {
-        setSelectedPuzzle(puzzlesAndSolutions[0][0])
-    }, [])
+        let randomIndex = Math.floor(Math.random() * 5)
+        setSelectedPuzzle(puzzlesAndSolutions[randomIndex][0])
+    }, [randomMaker])
 
 
 
@@ -91,40 +99,49 @@ const App = () => {
                     console.log(code)
                     break
             }
+
+            if (/[1-9]/.test(code)) {
+                
+                let coordinate = rawId.split("").slice(0,2).join("")
     
-            let coordinate = rawId.split("").slice(0,2).join("")
+                let inputIndex = rawId.split("").slice(2).join("")
+        
+                let tempInputArr = JSON.parse(JSON.stringify(cellInput))
+        
+                if (tempInputArr[inputIndex]) {
+        
+                    tempInputArr[inputIndex].splice(0)
+        
+                    tempInputArr[inputIndex].push(value)
+        
+                    setCellInput(tempInputArr)
     
-            let inputIndex = rawId.split("").slice(2).join("")
+                    let tempMovesArr = JSON.parse(JSON.stringify(moves))
+                    tempMovesArr.push([inputIndex, rawId])
+                    setMoves(tempMovesArr)
+        
+                    let sendingData = {
+                        puzzle: selectedPuzzle,
+                        coordinate: coordinate,
+                        value: value,
+                        rawId: rawId
+                    }
+        
+                    axios.post(`${BASE_URL}/api/check`, sendingData).then(response => {
+                        const {data} = response
+                        console.log(data)
+                        setCheckResult(data)
     
-            let tempInputArr = JSON.parse(JSON.stringify(cellInput))
+                        let tempObj = JSON.parse(JSON.stringify(allChecks))
+                        tempObj[rawId] = data
+                        setAllChecks(tempObj)
     
-            if (tempInputArr[inputIndex]) {
-    
-                tempInputArr[inputIndex].splice(0)
-    
-                tempInputArr[inputIndex].push(value)
-    
-                setCellInput(tempInputArr)
-    
-                let sendingData = {
-                    puzzle: selectedPuzzle,
-                    coordinate: coordinate,
-                    value: value,
-                    rawId: rawId
+                        //setCount(prevCount => prevCount += 1)
+                    })
                 }
-    
-                axios.post(`${BASE_URL}/api/check`, sendingData).then(response => {
-                    const {data} = response
-                    console.log(data)
-                    setCheckResult(data)
-
-                    let tempObj = JSON.parse(JSON.stringify(allChecks))
-                    tempObj[rawId] = data
-                    setAllChecks(tempObj)
-
-                    //setCount(prevCount => prevCount += 1)
-                })
             }
+    
+
     
     
         }
@@ -142,11 +159,73 @@ const App = () => {
     
 
     const handleClick = (Event) => {
-        const {id, innerHTML} = Event.target
+        const {name, id, innerHTML} = Event.target
 
-        setSelectedCell(id)
+        if (name === "solve-me") {
 
-        setSelectedValue(innerHTML)
+            setIsLoading(true)
+
+            axios.post(`${BASE_URL}/api/solve`, {puzzle: selectedPuzzle}).then(response => {
+                const {data} = response
+                console.log(data)
+                setSolvedPuzzle(data.solution)
+                setIsLoading(false)
+            })
+
+        } else if (name === "unsolve-me") {
+            setSolvedPuzzle("")
+        } else if (name === "new-one") {
+
+            setSolvedPuzzle("")
+            setSelectedValue("")
+            setSelectedCell("")
+            setSelectedPuzzle("")
+            setAllChecks({})
+            setMoves([])
+            setCellInput([])
+            setRandomMaker(prevRandomMaker => prevRandomMaker += 1)
+
+        } else if (name === "undo") {
+
+            if (moves.length >= 1) {
+                //console.log(allChecks)
+                console.log(selectedValue)
+                console.log(selectedCell)
+                
+
+                let movesTempArr = JSON.parse(JSON.stringify(moves))
+                let tempInputArr = JSON.parse(JSON.stringify(cellInput))
+    
+                let undoIndex = movesTempArr[movesTempArr.length - 1][0]
+                tempInputArr.splice(undoIndex, 1, [])
+    
+                movesTempArr.pop()
+    
+
+                if (moves.length > 1) {
+                    setSelectedCell(movesTempArr[movesTempArr.length - 1][1])
+                } else {
+                    setSelectedCell("")
+                }
+
+                setMoves(movesTempArr)
+                setCellInput(tempInputArr)
+
+                
+
+                // have to change allcheks for deleted moves
+            }
+
+
+
+        } else {
+            console.log(name)
+            setSelectedCell(id)
+
+            setSelectedValue(innerHTML)
+        }
+
+
 
     }
 
@@ -194,22 +273,48 @@ const App = () => {
         }*/
     }
 
+    //console.log(cellInput)
+    console.log(moves)
+
 
 
     return (
         <div>
-            <Square2
-                data={{
-                    handleChange: handleChange,
-                    handleClick: handleClick,
-                    cellInput: cellInput,
-                    selectedPuzzle: selectedPuzzle,
-                    checkResult: checkResult,
-                    selectedCell: selectedCell,
-                    allChecks: allChecks,
-                    selectedValue: selectedValue
-                }}
-            />
+            {
+                !isLoading ? (
+                    <div className="container">
+                        <Square2
+                            data={{
+                                handleChange: handleChange,
+                                handleClick: handleClick,
+                                cellInput: cellInput,
+                                selectedPuzzle: selectedPuzzle,
+                                solvedPuzzle: solvedPuzzle,
+                                checkResult: checkResult,
+                                selectedCell: selectedCell,
+                                allChecks: allChecks,
+                                selectedValue: selectedValue
+                            }}
+                        />
+
+                        <br />
+
+                        <button name="solve-me" onClick={handleClick}>Solve Me</button>
+                        <br />
+                        <button name="unsolve-me" onClick={handleClick}>Unsolve Me</button>
+                        <br />
+                        <button name="new-one" onClick={handleClick}>New Puzzle</button>
+                        <br />
+                        <button name="undo" onClick={handleClick}>Undo</button>
+                    </div>
+
+                ) : (
+                    <div className="loading">
+                        <h1>Loading...</h1>
+                    </div>
+                )
+            }
+
         </div>
     )
 }

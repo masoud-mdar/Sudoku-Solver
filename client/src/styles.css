@@ -4,9 +4,10 @@
     box-sizing: border-box;
 }
 
+
 .table-wrapper {
-    width: 600px;
-    height: 600px;
+    width: 40vw;
+    height: 40vw;
 }
 
 table {
@@ -23,8 +24,8 @@ tr:nth-child(3n) td {
 }
 
 td {
-    width: 60px;
-    height: 60px;
+    width: 4vw;
+    height: 4vw;
     margin: 0;
     padding: 0;
     border: 1px solid lightgray;
@@ -39,24 +40,48 @@ td:nth-child(3n) {
 }
 
 .cell {
-    width: 60px;
-    height: 60px;
+    width: 4vw;
+    height: 4vw;
     margin: 0;
     border: 0;
     outline: none;
     background: none;
     text-align: center;
+    font-size: 26px;
     cursor:default;
 }
 
 .table-span {
-    width: 60px;
-    height: 60px;
+    width: 4vw;
+    height: 4vw;
+    position: relative;
 }
 
-.table-span div {
+.table-span .cell {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+.table-span .coordinates {
+    display: none;
+    width: 4vw;
+    height: 4vw;
+    position: absolute;
+    top: -5vw;
+    z-index: 1;
+    cursor: default;
+}
+
+.table-span:hover .coordinates {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.table-span .coordinates ul {
+    width: 4vw;
+    height: 4vw;
+    list-style: none;
+    border: 1px solid crimson;
+}

@@ -5,15 +5,18 @@ const Square = (props) => {
 
     let tableRow = ["A","B","C","D","E","F","G","H","I"]
 
-    const {selectedPuzzle, selectedCell, checkResult, allChecks, selectedValue} = props.data
+    const {selectedPuzzle, solvedPuzzle, selectedCell, checkResult, allChecks, selectedValue} = props.data
     let selectedPuzzleArr = selectedPuzzle.split("")
+
+    //console.log(props.data.cellInput[1].join(""))
+    console.log(selectedValue)
 
     let puzzleIndexArr = selectedPuzzleArr.map(element => {
         return element === "." ? false : true
     })
 
-    console.log(selectedCell)
-    console.log(allChecks)
+    //console.log(selectedCell)
+    //console.log(allChecks)
 
     let selectedColumn
     let selectedRaw
@@ -25,7 +28,7 @@ const Square = (props) => {
         
     }
 
-    console.log(selectedColumn)
+    //console.log(selectedColumn)
 
 
 
@@ -42,7 +45,14 @@ const Square = (props) => {
         while (n <= indexAbsolute) {
             //console.log(indexRow)
             let item = <td key={Math.random() * Math.random()}>
-                <span className="table-span">
+                <span name="cell" className="table-span">
+                    <div className="coordinates">
+                        {
+                            allChecks[`${row}${indexRow}${n}`] && allChecks[`${row}${indexRow}${n}`].valid ? `${row}${indexRow}`
+                            : allChecks[`${row}${indexRow}${n}`] && !allChecks[`${row}${indexRow}${n}`].valid && allChecks[`${row}${indexRow}${n}`].conflict ? <ul>{allChecks[`${row}${indexRow}${n}`].conflict.map(element => <li key={element}>{element}</li>)}</ul>
+                            : ""
+                        }
+                    </div>
                     
                     <div 
                     name="cell" 
@@ -53,17 +63,21 @@ const Square = (props) => {
                         backgroundColor: selectedCell === `${row}${indexRow}${n}` ? "gray" 
                         : selectedRaw === row ? "gray" 
                         : selectedColumn === `${indexRow}` ? "gray"
-                        : selectedValue === props.data.cellInput[n] ? "gray"
-                        : selectedValue === selectedPuzzleArr[n] ? "gray"
+                        : selectedValue && selectedValue === props.data.cellInput[n].join("") ? "gray"
+                        : selectedValue && selectedValue === selectedPuzzleArr[n] ? "gray"
                         : "",
 
-                        color: allChecks[`${row}${indexRow}${n}`] && !allChecks[`${row}${indexRow}${n}`].valid ? "red" 
-                        : allChecks[`${row}${indexRow}${n}`] && allChecks[`${row}${indexRow}${n}`].valid ? "green" 
+                        color: !solvedPuzzle && allChecks[`${row}${indexRow}${n}`] && !allChecks[`${row}${indexRow}${n}`].valid ? "red" 
+                        : !solvedPuzzle && allChecks[`${row}${indexRow}${n}`] && allChecks[`${row}${indexRow}${n}`].valid ? "green" 
                         : ""
                     }}
                     className="cell">
 
-                        {puzzleIndexArr[n] ? selectedPuzzleArr[n] : props.data.cellInput[n]}
+                        {
+                        !solvedPuzzle && puzzleIndexArr[n] ? selectedPuzzleArr[n] 
+                        : !solvedPuzzle && props.data.cellInput[n] ? props.data.cellInput[n].join("")
+                        : solvedPuzzle.split("")[n]
+                        }
 
                     </div>
                 
