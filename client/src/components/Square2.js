@@ -8,15 +8,10 @@ const Square = (props) => {
     const {selectedPuzzle, solvedPuzzle, selectedCell, checkResult, allChecks, selectedValue} = props.data
     let selectedPuzzleArr = selectedPuzzle.split("")
 
-    //console.log(props.data.cellInput[1].join(""))
-    //console.log(selectedValue)
 
     let puzzleIndexArr = selectedPuzzleArr.map(element => {
         return element === "." ? false : true
     })
-
-    //console.log(selectedCell)
-    //console.log(allChecks)
 
     let selectedColumn
     let selectedRaw
@@ -27,8 +22,6 @@ const Square = (props) => {
         selectedRaw = columnArr[0]
         
     }
-
-    //console.log(selectedColumn)
 
 
 
@@ -60,7 +53,8 @@ const Square = (props) => {
                     id={`${row}${indexRow}${n}`}
                     onClick={props.data.handleClick}
                     style={{
-                        backgroundColor: selectedCell === `${row}${indexRow}${n}` ? "gray" 
+                        backgroundColor: checkResult.rawId === `${row}${indexRow}${n}` && !checkResult.valid ? "yellow"
+                        : selectedCell === `${row}${indexRow}${n}` ? "gray" 
                         : selectedRaw === row ? "gray" 
                         : selectedColumn === `${indexRow}` ? "gray"
                         : selectedValue && selectedValue === props.data.cellInput[n].join("") ? "gray"

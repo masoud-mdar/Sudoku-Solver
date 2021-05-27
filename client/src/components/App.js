@@ -27,6 +27,8 @@ const App = () => {
 
     const [randomMaker, setRandomMaker] = useState(0)
 
+    const [isCleanMode, setIsCleanMode] = useState(false)
+
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
@@ -53,6 +55,7 @@ const App = () => {
             const rawId = selectedCell
 
             setCheckResult({})
+            setIsCleanMode(false)
             //console.log(rawId)
     
             let value
@@ -173,6 +176,7 @@ const App = () => {
         if (name === "solve-me") {
 
             setIsLoading(true)
+            setIsCleanMode(false)
 
             axios.post(`${BASE_URL}/api/solve`, {puzzle: selectedPuzzle}).then(response => {
                 const {data} = response
@@ -183,6 +187,7 @@ const App = () => {
 
         } else if (name === "unsolve-me") {
             setSolvedPuzzle("")
+            setIsCleanMode(false)
         } else if (name === "new-one") {
 
             setSolvedPuzzle("")
@@ -192,9 +197,11 @@ const App = () => {
             setAllChecks({})
             setMoves([])
             setCellInput([])
+            setIsCleanMode(false)
             setRandomMaker(prevRandomMaker => prevRandomMaker += 1)
 
         } else if (name === "undo") {
+            setIsCleanMode(false)
 
             if (moves.length >= 1) {
 
@@ -204,7 +211,10 @@ const App = () => {
                 let undoIndex = movesTempArr[movesTempArr.length - 1][0]
 
                 let lastItemrawId = movesTempArr[movesTempArr.length - 1][1]
-                delete allChecks[lastItemrawId]
+
+                let tempAllChecks = JSON.parse(JSON.stringify(allChecks))
+                delete tempAllChecks[lastItemrawId]
+                setAllChecks(tempAllChecks)
 
                 tempInputArr.splice(undoIndex, 1, [])
     
@@ -222,16 +232,50 @@ const App = () => {
 
                 setMoves(movesTempArr)
                 setCellInput(tempInputArr)
+                setCheckResult({})
 
             }
 
 
 
-        } else {
-            //console.log(name)
-            setSelectedCell(id)
+        } else if (name === "clean") {
 
+            setIsCleanMode(true)
+
+        } else {
+
+            setSelectedCell(id)
             setSelectedValue(innerHTML)
+
+            if (isCleanMode) {
+
+                let movesTempArr = JSON.parse(JSON.stringify(moves))
+                let tempInputArr = JSON.parse(JSON.stringify(cellInput))
+
+                let inputIndex = id.split("").slice(2).join("")
+
+                tempInputArr.splice(inputIndex, 1, [])
+                setCellInput(tempInputArr)
+                
+
+                let indexInMoves = movesTempArr.findIndex(element => {
+                    return element.indexOf(id) > -1
+                })
+
+                movesTempArr.splice(indexInMoves, 1)
+
+                setMoves(movesTempArr)
+
+                let tempAllChecks = JSON.parse(JSON.stringify(allChecks))
+                delete tempAllChecks[id]
+
+                setAllChecks(tempAllChecks)
+
+
+                setSelectedValue("")
+                setCheckResult({})
+                setIsCleanMode(false)
+            }
         }
 
 
@@ -285,6 +329,7 @@ const App = () => {
     //console.log(cellInput)
     //console.log(moves)
     //console.log(allChecks)
+    console.log(checkResult)
 
 
 
@@ -315,7 +360,9 @@ const App = () => {
                         <br />
                         <button name="new-one" onClick={handleClick}>New Puzzle</button>
                         <br />
-                        <button name="undo" onClick={handleClick}>Undo</button>
+                        <button name="undo" onClick={handleClick}>Undo Moves</button>
+                        <br />
+                        <button name="clean" onClick={handleClick}>Clean</button>
                     </div>
 
                 ) : (
