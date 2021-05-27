@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react"
 import axios from "axios"
 
 //import Square from "./Square"
+import RawSquare from "./RawSquare"
 import Square2 from "./Square2"
 
 import {BASE_URL} from "../utils/constants"
@@ -28,6 +29,8 @@ const App = () => {
     const [randomMaker, setRandomMaker] = useState(0)
 
     const [isCleanMode, setIsCleanMode] = useState(false)
+
+    const [isRawSquare, setIsRawSquare] = useState(false)
 
     const [isLoading, setIsLoading] = useState(false)
 
@@ -242,6 +245,8 @@ const App = () => {
 
             setIsCleanMode(true)
 
+        } else if (name === "raw-square") {
+            setIsRawSquare(prevRawSquare => !prevRawSquare)
         } else {
 
             setSelectedCell(id)
@@ -338,19 +343,38 @@ const App = () => {
             {
                 !isLoading ? (
                     <div className="container">
-                        <Square2
-                            data={{
-                                handleChange: handleChange,
-                                handleClick: handleClick,
-                                cellInput: cellInput,
-                                selectedPuzzle: selectedPuzzle,
-                                solvedPuzzle: solvedPuzzle,
-                                checkResult: checkResult,
-                                selectedCell: selectedCell,
-                                allChecks: allChecks,
-                                selectedValue: selectedValue
-                            }}
-                        />
+                        {
+                            !isRawSquare ? (
+                                <Square2
+                                    data={{
+                                        handleChange: handleChange,
+                                        handleClick: handleClick,
+                                        cellInput: cellInput,
+                                        selectedPuzzle: selectedPuzzle,
+                                        solvedPuzzle: solvedPuzzle,
+                                        checkResult: checkResult,
+                                        selectedCell: selectedCell,
+                                        allChecks: allChecks,
+                                        selectedValue: selectedValue
+                                    }}
+                                />
+                            ) : (
+                                <RawSquare
+                                    data={{
+                                        handleChange: handleChange,
+                                        handleClick: handleClick,
+                                        cellInput: cellInput,
+                                        selectedPuzzle: selectedPuzzle,
+                                        solvedPuzzle: solvedPuzzle,
+                                        checkResult: checkResult,
+                                        selectedCell: selectedCell,
+                                        allChecks: allChecks,
+                                        selectedValue: selectedValue
+                                    }}
+                                />
+                            )
+                        }
+
 
                         <br />
 
@@ -363,6 +387,16 @@ const App = () => {
                         <button name="undo" onClick={handleClick}>Undo Moves</button>
                         <br />
                         <button name="clean" onClick={handleClick}>Clean</button>
+                        <br />
+                        <button name="raw-square" onClick={handleClick}>
+                            {
+                                !isRawSquare ? (
+                                    "custom Sudoku"
+                                ) : (
+                                    "Just Play"
+                                )
+                            }
+                        </button>
                     </div>
 
                 ) : (
