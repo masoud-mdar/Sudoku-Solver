@@ -5,7 +5,7 @@ const Square = (props) => {
 
     let tableRow = ["A","B","C","D","E","F","G","H","I"]
 
-    const {selectedPuzzle, solvedPuzzle, selectedCell, checkResult, allChecks, selectedValue} = props.data
+    const {selectedPuzzle, cellInput, solvedPuzzle, selectedCell, checkResult, allChecks, selectedValue} = props.data
     let selectedPuzzleArr = selectedPuzzle.split("")
 
 
@@ -57,7 +57,7 @@ const Square = (props) => {
                         : selectedCell === `${row}${indexRow}${n}` ? "gray" 
                         : selectedRaw === row ? "gray" 
                         : selectedColumn === `${indexRow}` ? "gray"
-                        : selectedValue && selectedValue === props.data.cellInput[n].join("") ? "gray"
+                        : selectedValue && selectedValue ===cellInput[n].join("") ? "gray"
                         : selectedValue && selectedValue === selectedPuzzleArr[n] ? "gray"
                         : "",
 
@@ -69,7 +69,7 @@ const Square = (props) => {
 
                         {
                         !solvedPuzzle && puzzleIndexArr[n] ? selectedPuzzleArr[n] 
-                        : !solvedPuzzle && props.data.cellInput[n] ? props.data.cellInput[n].join("")
+                        : !solvedPuzzle &&cellInput[n] ?cellInput[n].join("")
                         : solvedPuzzle.split("")[n]
                         }
 

@@ -32,6 +32,10 @@ const App = () => {
 
     const [isRawSquare, setIsRawSquare] = useState(false)
 
+    const [customCellInput, setCustomCellInput] = useState({})
+
+    const [customKeys, setCustomKeys] = useState([])
+
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
@@ -41,6 +45,22 @@ const App = () => {
         }
         setCellInput(tempArr)
     }, [randomMaker])
+
+    useEffect(() => {
+        let tempArr = []
+        for (let i=0; i<81; i++) {
+            tempArr.push(["."])
+        }
+        setCustomCellInput(tempArr)
+    }, [isRawSquare]) 
+
+    useEffect(() => {
+        let tempArr = []
+        for (let i=0; i<81; i++) {
+            tempArr.push([false])
+        }
+        setCustomKeys(tempArr)
+    }, [isRawSquare]) 
 
 
     useEffect(() => {
@@ -107,53 +127,89 @@ const App = () => {
             }
 
             if (/[1-9]/.test(code)) {
-                
-                let coordinate = rawId.split("").slice(0,2).join("")
+
+                if (!isRawSquare) {
+
+                    let coordinate = rawId.split("").slice(0,2).join("")
     
-                let inputIndex = rawId.split("").slice(2).join("")
+                    let inputIndex = rawId.split("").slice(2).join("")
+            
+                    let tempInputArr = JSON.parse(JSON.stringify(cellInput))
+            
+                    if (tempInputArr[inputIndex]) {
+            
+                        tempInputArr[inputIndex].splice(0)
+            
+                        tempInputArr[inputIndex].push(value)
+            
+                        setCellInput(tempInputArr)
         
-                let tempInputArr = JSON.parse(JSON.stringify(cellInput))
-        
-                if (tempInputArr[inputIndex]) {
-        
-                    tempInputArr[inputIndex].splice(0)
-        
-                    tempInputArr[inputIndex].push(value)
-        
-                    setCellInput(tempInputArr)
+                        let tempMovesArr = JSON.parse(JSON.stringify(moves))
+                        let lastItem = tempMovesArr[tempMovesArr.length-1]
+                        //console.log(tempMovesArr)
+                        //console.log(lastItem)
+                        if (lastItem && lastItem[0] !== inputIndex) {
+                            tempMovesArr.push([inputIndex, rawId])
+                            setMoves(tempMovesArr)
+                        } else if (!lastItem) {
+                            tempMovesArr.push([inputIndex, rawId])
+                            setMoves(tempMovesArr)
+                        }
     
-                    let tempMovesArr = JSON.parse(JSON.stringify(moves))
-                    let lastItem = tempMovesArr[tempMovesArr.length-1]
-                    //console.log(tempMovesArr)
-                    //console.log(lastItem)
-                    if (lastItem && lastItem[0] !== inputIndex) {
-                        tempMovesArr.push([inputIndex, rawId])
-                        setMoves(tempMovesArr)
-                    } else if (!lastItem) {
-                        tempMovesArr.push([inputIndex, rawId])
-                        setMoves(tempMovesArr)
+            
+                        let sendingData = {
+                            puzzle: selectedPuzzle,
+                            coordinate: coordinate,
+                            value: value,
+                            rawId: rawId
+                        }
+            
+                        axios.post(`${BASE_URL}/api/check`, sendingData).then(response => {
+                            const {data} = response
+                            //console.log(data)
+                            setCheckResult(data)
+        
+                            let tempObj = JSON.parse(JSON.stringify(allChecks))
+                            tempObj[rawId] = data
+                            setAllChecks(tempObj)
+        
+                            //setCount(prevCount => prevCount += 1)
+                        })
                     }
 
-        
-                    let sendingData = {
-                        puzzle: selectedPuzzle,
-                        coordinate: coordinate,
-                        value: value,
-                        rawId: rawId
+
+
+
+                } else if (isRawSquare) {
+    
+                    let inputIndex = rawId.split("").slice(2).join("")
+            
+                    let tempInputArr = JSON.parse(JSON.stringify(customCellInput))
+
+                    let tempCustomKeysArr = JSON.parse(JSON.stringify(customKeys))
+
+                    if (tempInputArr[inputIndex]) {
+            
+                        tempInputArr[inputIndex].splice(0)
+                        tempInputArr[inputIndex].push(value)
+
+                        tempCustomKeysArr[inputIndex].splice(0)
+                        tempCustomKeysArr[inputIndex].push(true)
+
+                        ///////////////////////////////////////////////
+            
+                        setCustomCellInput(tempInputArr)
+
+                        setCustomKeys(tempCustomKeysArr)
+
+                        //console.log(tempInputArr.join(""))
+
                     }
-        
-                    axios.post(`${BASE_URL}/api/check`, sendingData).then(response => {
-                        const {data} = response
-                        //console.log(data)
-                        setCheckResult(data)
-    
-                        let tempObj = JSON.parse(JSON.stringify(allChecks))
-                        tempObj[rawId] = data
-                        setAllChecks(tempObj)
-    
-                        //setCount(prevCount => prevCount += 1)
-                    })
+
+
                 }
+                
+
             }
     
 
@@ -178,15 +234,34 @@ const App = () => {
 
         if (name === "solve-me") {
 
+            // adding error response "puzzle can't be solved to isRawSquare part"
+
             setIsLoading(true)
             setIsCleanMode(false)
 
-            axios.post(`${BASE_URL}/api/solve`, {puzzle: selectedPuzzle}).then(response => {
-                const {data} = response
-                //console.log(data)
-                setSolvedPuzzle(data.solution)
-                setIsLoading(false)
-            })
+            if (isRawSquare) {
+
+                let puzzle = customCellInput.join("")
+                //console.log(puzzle)
+
+                axios.post(`${BASE_URL}/api/solve`, {puzzle: puzzle}).then(response => {
+                    const {data} = response
+                    //console.log(data)
+                    setSolvedPuzzle(data.solution)
+                    setIsLoading(false)
+                })
+
+            } else if (!isRawSquare) {
+
+                axios.post(`${BASE_URL}/api/solve`, {puzzle: selectedPuzzle}).then(response => {
+                    const {data} = response
+                    //console.log(data)
+                    setSolvedPuzzle(data.solution)
+                    setIsLoading(false)
+                })
+            }
+
+
 
         } else if (name === "unsolve-me") {
             setSolvedPuzzle("")
@@ -246,7 +321,16 @@ const App = () => {
             setIsCleanMode(true)
 
         } else if (name === "raw-square") {
-            setIsRawSquare(prevRawSquare => !prevRawSquare)
+            setIsRawSquare(prevIsRawSquare => !prevIsRawSquare)
+
+            if (!isRawSquare) {
+                console.log("zzz")
+                setSolvedPuzzle("")
+            
+            }
+
+
+
         } else {
 
             setSelectedCell(id)
@@ -334,7 +418,8 @@ const App = () => {
     //console.log(cellInput)
     //console.log(moves)
     //console.log(allChecks)
-    console.log(checkResult)
+    //console.log(checkResult)
+    //console.log(cellInput.join(""))
 
 
 
@@ -363,13 +448,10 @@ const App = () => {
                                     data={{
                                         handleChange: handleChange,
                                         handleClick: handleClick,
-                                        cellInput: cellInput,
-                                        selectedPuzzle: selectedPuzzle,
+                                        customCellInput: customCellInput,
+                                        customKeys: customKeys,
                                         solvedPuzzle: solvedPuzzle,
-                                        checkResult: checkResult,
-                                        selectedCell: selectedCell,
-                                        allChecks: allChecks,
-                                        selectedValue: selectedValue
+                                        selectedCell: selectedCell
                                     }}
                                 />
                             )
