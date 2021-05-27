@@ -9,7 +9,7 @@ const Square = (props) => {
     let selectedPuzzleArr = selectedPuzzle.split("")
 
     //console.log(props.data.cellInput[1].join(""))
-    console.log(selectedValue)
+    //console.log(selectedValue)
 
     let puzzleIndexArr = selectedPuzzleArr.map(element => {
         return element === "." ? false : true

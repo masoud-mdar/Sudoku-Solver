@@ -117,8 +117,17 @@ const App = () => {
                     setCellInput(tempInputArr)
     
                     let tempMovesArr = JSON.parse(JSON.stringify(moves))
-                    tempMovesArr.push([inputIndex, rawId])
-                    setMoves(tempMovesArr)
+                    let lastItem = tempMovesArr[tempMovesArr.length-1]
+                    //console.log(tempMovesArr)
+                    //console.log(lastItem)
+                    if (lastItem && lastItem[0] !== inputIndex) {
+                        tempMovesArr.push([inputIndex, rawId])
+                        setMoves(tempMovesArr)
+                    } else if (!lastItem) {
+                        tempMovesArr.push([inputIndex, rawId])
+                        setMoves(tempMovesArr)
+                    }
+
         
                     let sendingData = {
                         puzzle: selectedPuzzle,
@@ -129,7 +138,7 @@ const App = () => {
         
                     axios.post(`${BASE_URL}/api/check`, sendingData).then(response => {
                         const {data} = response
-                        console.log(data)
+                        //console.log(data)
                         setCheckResult(data)
     
                         let tempObj = JSON.parse(JSON.stringify(allChecks))
@@ -167,7 +176,7 @@ const App = () => {
 
             axios.post(`${BASE_URL}/api/solve`, {puzzle: selectedPuzzle}).then(response => {
                 const {data} = response
-                console.log(data)
+                //console.log(data)
                 setSolvedPuzzle(data.solution)
                 setIsLoading(false)
             })
@@ -188,38 +197,38 @@ const App = () => {
         } else if (name === "undo") {
 
             if (moves.length >= 1) {
-                //console.log(allChecks)
-                console.log(selectedValue)
-                console.log(selectedCell)
-                
 
                 let movesTempArr = JSON.parse(JSON.stringify(moves))
                 let tempInputArr = JSON.parse(JSON.stringify(cellInput))
     
                 let undoIndex = movesTempArr[movesTempArr.length - 1][0]
+
+                let lastItemrawId = movesTempArr[movesTempArr.length - 1][1]
+                delete allChecks[lastItemrawId]
+
                 tempInputArr.splice(undoIndex, 1, [])
     
                 movesTempArr.pop()
     
 
                 if (moves.length > 1) {
+                    let newIndex = movesTempArr[movesTempArr.length - 1][0]
                     setSelectedCell(movesTempArr[movesTempArr.length - 1][1])
+                    setSelectedValue(tempInputArr[newIndex].join(""))
                 } else {
                     setSelectedCell("")
+                    setSelectedValue("")
                 }
 
                 setMoves(movesTempArr)
                 setCellInput(tempInputArr)
 
-                
-
-                // have to change allcheks for deleted moves
             }
 
 
 
         } else {
-            console.log(name)
+            //console.log(name)
             setSelectedCell(id)
 
             setSelectedValue(innerHTML)
@@ -274,7 +283,8 @@ const App = () => {
     }
 
     //console.log(cellInput)
-    console.log(moves)
+    //console.log(moves)
+    //console.log(allChecks)
 
 
 
