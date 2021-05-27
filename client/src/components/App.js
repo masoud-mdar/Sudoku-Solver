@@ -212,17 +212,11 @@ const App = () => {
 
             }
     
-
-    
-    
         }
 
-
-        
         document.addEventListener("keydown", handleKeyPress)
 
         return () => {document.removeEventListener("keydown", handleKeyPress)}
-
 
     })
 
@@ -239,27 +233,14 @@ const App = () => {
             setIsLoading(true)
             setIsCleanMode(false)
 
-            if (isRawSquare) {
+            let puzzle = isRawSquare ? customCellInput.join("") : selectedPuzzle
 
-                let puzzle = customCellInput.join("")
-                //console.log(puzzle)
-
-                axios.post(`${BASE_URL}/api/solve`, {puzzle: puzzle}).then(response => {
-                    const {data} = response
-                    //console.log(data)
-                    setSolvedPuzzle(data.solution)
-                    setIsLoading(false)
-                })
-
-            } else if (!isRawSquare) {
-
-                axios.post(`${BASE_URL}/api/solve`, {puzzle: selectedPuzzle}).then(response => {
-                    const {data} = response
-                    //console.log(data)
-                    setSolvedPuzzle(data.solution)
-                    setIsLoading(false)
-                })
-            }
+            axios.post(`${BASE_URL}/api/solve`, {puzzle: puzzle}).then(response => {
+                const {data} = response
+                //console.log(data)
+                setSolvedPuzzle(data.solution)
+                setIsLoading(false)
+            })
 
 
 
@@ -271,17 +252,35 @@ const App = () => {
             setSolvedPuzzle("")
             setSelectedValue("")
             setSelectedCell("")
-            setSelectedPuzzle("")
-            setAllChecks({})
-            setMoves([])
-            setCellInput([])
-            setIsCleanMode(false)
-            setRandomMaker(prevRandomMaker => prevRandomMaker += 1)
+
+            if (!isRawSquare) {
+
+                setSelectedPuzzle("")
+                setAllChecks({})
+                setMoves([])
+                setCellInput([])
+                setIsCleanMode(false)
+                setRandomMaker(prevRandomMaker => prevRandomMaker += 1)
+
+            } else if (isRawSquare) {
+
+                let inputTempArr = []
+                for (let i=0; i<81; i++) {
+                    inputTempArr.push(["."])
+                }
+                setCustomCellInput(inputTempArr)
+
+                let keysTempArr = []
+                for (let i=0; i<81; i++) {
+                    keysTempArr.push([false])
+                }
+                setCustomKeys(keysTempArr)
+            }
 
         } else if (name === "undo") {
             setIsCleanMode(false)
 
-            if (moves.length >= 1) {
+            if (moves.length >= 1 && !isRawSquare) {
 
                 let movesTempArr = JSON.parse(JSON.stringify(moves))
                 let tempInputArr = JSON.parse(JSON.stringify(cellInput))
@@ -336,7 +335,7 @@ const App = () => {
             setSelectedCell(id)
             setSelectedValue(innerHTML)
 
-            if (isCleanMode) {
+            if (isCleanMode && !isRawSquare) {
 
                 let movesTempArr = JSON.parse(JSON.stringify(moves))
                 let tempInputArr = JSON.parse(JSON.stringify(cellInput))
@@ -360,11 +359,24 @@ const App = () => {
 
                 setAllChecks(tempAllChecks)
 
-
-                setSelectedValue("")
                 setCheckResult({})
-                setIsCleanMode(false)
+
+            } else if (isCleanMode && isRawSquare) {
+
+                let tempInputArr = JSON.parse(JSON.stringify(customCellInput))
+                let tempCustomKeysArr = JSON.parse(JSON.stringify(customKeys))
+
+                let inputIndex = id.split("").slice(2).join("")
+
+                tempInputArr.splice(inputIndex, 1, ["."])
+                setCustomCellInput(tempInputArr)
+
+                tempCustomKeysArr.splice(inputIndex, 1, [false])
+                setCustomKeys(tempCustomKeysArr)
             }
+
+            setSelectedValue("")
+            setIsCleanMode(false)
         }
 
 
