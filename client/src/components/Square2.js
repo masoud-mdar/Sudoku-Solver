@@ -8,6 +8,8 @@ const Square = (props) => {
     const {selectedPuzzle, cellInput, solvedPuzzle, selectedCell, checkResult, allChecks, selectedValue} = props.data
     let selectedPuzzleArr = selectedPuzzle.split("")
 
+    console.log(selectedValue)
+
 
     let puzzleIndexArr = selectedPuzzleArr.map(element => {
         return element === "." ? false : true
@@ -54,15 +56,17 @@ const Square = (props) => {
                     onClick={props.data.handleClick}
                     style={{
                         backgroundColor: checkResult.rawId === `${row}${indexRow}${n}` && !checkResult.valid ? "#ffcdd4"
+                        : selectedValue && selectedValue === cellInput[n].join("") && selectedRaw === row && !checkResult.valid ? "#ffcdd4"
+                        : selectedValue && selectedValue === cellInput[n].join("") && selectedColumn === `${indexRow}` && !checkResult.valid ? "#ffcdd4"
                         : selectedCell === `${row}${indexRow}${n}` ? "#afdffc" 
                         : selectedRaw === row ? "#dfebf3" 
                         : selectedColumn === `${indexRow}` ? "#dfebf3"
-                        : selectedValue && selectedValue ===cellInput[n].join("") ? "#dfebf3"
+                        : selectedValue && selectedValue === cellInput[n].join("") ? "#dfebf3"
                         : selectedValue && selectedValue === selectedPuzzleArr[n] ? "#dfebf3"
                         : "",
 
                         color: !solvedPuzzle && allChecks[`${row}${indexRow}${n}`] && !allChecks[`${row}${indexRow}${n}`].valid ? "#fb5365" 
-                        : !solvedPuzzle && allChecks[`${row}${indexRow}${n}`] && allChecks[`${row}${indexRow}${n}`].valid ? "#304c64" 
+                        : !solvedPuzzle && allChecks[`${row}${indexRow}${n}`] && allChecks[`${row}${indexRow}${n}`].valid ? "#1a91db" 
                         : "#304c64"
                     }}
                     className="cell">

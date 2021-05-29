@@ -148,8 +148,10 @@ const App = () => {
                     let inputIndex = rawId.split("").slice(2).join("")
             
                     let tempInputArr = JSON.parse(JSON.stringify(cellInput))
+
+                    let selectedPuzzleArr = selectedPuzzle.split("")
             
-                    if (tempInputArr[inputIndex]) {
+                    if (tempInputArr[inputIndex] && selectedPuzzleArr[inputIndex] === ".") {
             
                         tempInputArr[inputIndex].splice(0)
             
@@ -348,6 +350,7 @@ const App = () => {
 
             setSelectedCell(id)
             setSelectedValue(innerHTML)
+            
 
             if (isCleanMode && !isRawSquare) {
 
@@ -375,6 +378,9 @@ const App = () => {
 
                 setCheckResult({})
 
+                setSelectedValue("")
+                setIsCleanMode(false)
+
             } else if (isCleanMode && isRawSquare) {
 
                 let tempInputArr = JSON.parse(JSON.stringify(customCellInput))
@@ -387,65 +393,18 @@ const App = () => {
 
                 tempCustomKeysArr.splice(inputIndex, 1, [false])
                 setCustomKeys(tempCustomKeysArr)
+
+                setSelectedValue("")
+                setIsCleanMode(false)
             }
 
-            setSelectedValue("")
-            setIsCleanMode(false)
+
         }
 
 
 
     }
 
-    const handleChange = (Event) => {
-        console.log("rrrr")
-        //const {name, value} = Event.target
-
-        /*if (name === "cell") {
-
-            if (/[1-9]/.test(value)) {
-
-                const rawId = Event.target.id
-
-                let coordinate = rawId.split("").slice(0,2).join("")
-    
-                let inputIndex = rawId.split("").slice(2).join("")
-    
-                let tempInputArr = JSON.parse(JSON.stringify(cellInput))
-    
-                tempInputArr[inputIndex].splice(0)
-    
-                //let onePartValue = value.split("").length > 1 ? value.split("")[value.split("").length-1] : value
-                let onePartValue = value
-    
-                tempInputArr[inputIndex].push(onePartValue)
-
-                setCellInput(tempInputArr)
-
-                let sendingData = {
-                    puzzle: selectedPuzzle,
-                    coordinate: coordinate,
-                    value: onePartValue
-                }
-
-                axios.post(`${BASE_URL}/api/check`, sendingData).then(response => {
-                    const {data} = response
-                    console.log(data)
-                    setCheckResult(data)
-                })
-
-
-
-            }
-
-        }*/
-    }
-
-    //console.log(cellInput)
-    //console.log(moves)
-    //console.log(allChecks)
-    //console.log(checkResult)
-    //console.log(cellInput.join(""))
 
 
 
@@ -458,7 +417,6 @@ const App = () => {
                             !isRawSquare ? (
                                 <Square2
                                     data={{
-                                        handleChange: handleChange,
                                         handleClick: handleClick,
                                         cellInput: cellInput,
                                         selectedPuzzle: selectedPuzzle,
@@ -472,39 +430,49 @@ const App = () => {
                             ) : (
                                 <RawSquare
                                     data={{
-                                        handleChange: handleChange,
                                         handleClick: handleClick,
                                         customCellInput: customCellInput,
                                         customKeys: customKeys,
                                         solvedPuzzle: solvedPuzzle,
-                                        selectedCell: selectedCell
+                                        selectedCell: selectedCell,
+                                        selectedValue: selectedValue
                                     }}
                                 />
                             )
                         }
 
+                        <div className="buttons">
+                            <div className="solve-part">
+                                <button name="solve-me" onClick={handleClick} className="btn solve">Solve Me</button>
 
-                        <br />
+                                <button name="unsolve-me" onClick={handleClick}>Unsolve Me</button>
+                            </div>
 
-                        <button name="solve-me" onClick={handleClick}>Solve Me</button>
-                        <br />
-                        <button name="unsolve-me" onClick={handleClick}>Unsolve Me</button>
-                        <br />
-                        <button name="new-one" onClick={handleClick}>New Puzzle</button>
-                        <br />
-                        <button name="undo" onClick={handleClick}>Undo Moves</button>
-                        <br />
-                        <button name="clean" onClick={handleClick}>Clean</button>
-                        <br />
-                        <button name="raw-square" onClick={handleClick}>
-                            {
-                                !isRawSquare ? (
-                                    "custom Sudoku"
-                                ) : (
-                                    "Just Play"
-                                )
-                            }
-                        </button>
+                            <div className="undo-part">
+                                {
+                                    !isRawSquare && <button name="undo" onClick={handleClick}>Undo Moves</button>
+                                }
+                                <button name="clean" onClick={handleClick}>Clean</button>
+                            </div>
+
+                            <div className="control-part">
+                                <button name="new-one" onClick={handleClick}>New Game</button>
+                                <button name="raw-square" onClick={handleClick}>
+                                    {
+                                        !isRawSquare ? (
+                                            "custom Sudoku"
+                                        ) : (
+                                            "Just Play"
+                                        )
+                                    }
+                                </button>
+                            </div>
+
+
+
+                        </div>
+
+
                     </div>
 
                 ) : (

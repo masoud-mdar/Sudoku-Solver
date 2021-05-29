@@ -5,17 +5,26 @@
 }
 
 .container {
+    width: 100vw;
+    height: 100vh;
     display: flex;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
 
 .table-wrapper {
     width: 40vw;
     height: 40vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid saddlebrown;
 }
 
 table {
     margin: 10px;
+    border-spacing: 0;
 }
 
 
@@ -32,7 +41,7 @@ td {
     height: 4vw;
     margin: 0;
     padding: 0;
-    border: 1px solid #afdffc;
+    border: 1px solid #bcc6d4;
 }
 
 td:first-child {
@@ -89,4 +98,21 @@ td:nth-child(3n) {
     height: 4vw;
     list-style: none;
     border: 1px solid crimson;
+}
+
+.buttons {
+    width: 40vw;
+    height: 40vw;
+    display: flex;
+    flex-direction: column;
+}
+
+.solve {
+    width: 15vw;
+    height: 7vh;
+    border: none;
+    border-radius: 3px;
+    background-color: #0074e3;
+    color: #ffffff;
+    font-size: larger;
 }
