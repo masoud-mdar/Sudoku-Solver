@@ -53,24 +53,25 @@ const Square = (props) => {
                     id={`${row}${indexRow}${n}`}
                     onClick={props.data.handleClick}
                     style={{
-                        backgroundColor: checkResult.rawId === `${row}${indexRow}${n}` && !checkResult.valid ? "yellow"
-                        : selectedCell === `${row}${indexRow}${n}` ? "gray" 
-                        : selectedRaw === row ? "gray" 
-                        : selectedColumn === `${indexRow}` ? "gray"
-                        : selectedValue && selectedValue ===cellInput[n].join("") ? "gray"
-                        : selectedValue && selectedValue === selectedPuzzleArr[n] ? "gray"
+                        backgroundColor: checkResult.rawId === `${row}${indexRow}${n}` && !checkResult.valid ? "#ffcdd4"
+                        : selectedCell === `${row}${indexRow}${n}` ? "#afdffc" 
+                        : selectedRaw === row ? "#dfebf3" 
+                        : selectedColumn === `${indexRow}` ? "#dfebf3"
+                        : selectedValue && selectedValue ===cellInput[n].join("") ? "#dfebf3"
+                        : selectedValue && selectedValue === selectedPuzzleArr[n] ? "#dfebf3"
                         : "",
 
-                        color: !solvedPuzzle && allChecks[`${row}${indexRow}${n}`] && !allChecks[`${row}${indexRow}${n}`].valid ? "red" 
-                        : !solvedPuzzle && allChecks[`${row}${indexRow}${n}`] && allChecks[`${row}${indexRow}${n}`].valid ? "green" 
-                        : ""
+                        color: !solvedPuzzle && allChecks[`${row}${indexRow}${n}`] && !allChecks[`${row}${indexRow}${n}`].valid ? "#fb5365" 
+                        : !solvedPuzzle && allChecks[`${row}${indexRow}${n}`] && allChecks[`${row}${indexRow}${n}`].valid ? "#304c64" 
+                        : "#304c64"
                     }}
                     className="cell">
 
                         {
                         !solvedPuzzle && puzzleIndexArr[n] ? selectedPuzzleArr[n] 
-                        : !solvedPuzzle &&cellInput[n] ?cellInput[n].join("")
-                        : solvedPuzzle.split("")[n]
+                        : !solvedPuzzle &&cellInput[n] &&cellInput[n].join("") !== "." ? cellInput[n].join("")
+                        : solvedPuzzle ? solvedPuzzle.split("")[n]
+                        : ""
                         }
 
                     </div>

@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+.container {
+    display: flex;
+}
+
 
 .table-wrapper {
     width: 40vw;
@@ -16,11 +20,11 @@ table {
 
 
 tr:first-child td {
-    border-top-color:black;
+    border-top-color: #2c4961;
 }
 
 tr:nth-child(3n) td {
-    border-bottom-color:black;
+    border-bottom-color:#2c4961;
 }
 
 td {
@@ -28,16 +32,17 @@ td {
     height: 4vw;
     margin: 0;
     padding: 0;
-    border: 1px solid lightgray;
+    border: 1px solid #afdffc;
 }
 
 td:first-child {
-    border-left-color: black;
+    border-left-color: #2c4961;
 }
 
 td:nth-child(3n) {
-    border-right-color: black;
+    border-right-color: #2c4961;
 }
+
 
 .cell {
     width: 4vw;

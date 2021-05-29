@@ -38,13 +38,13 @@ const App = () => {
 
     const [isLoading, setIsLoading] = useState(false)
 
-    useEffect(() => {
+    /*useEffect(() => {
         let tempArr = []
         for (let i=0; i<81; i++) {
             tempArr.push([])
         }
         setCellInput(tempArr)
-    }, [randomMaker])
+    }, [randomMaker])*/
 
     useEffect(() => {
         let tempArr = []
@@ -64,8 +64,21 @@ const App = () => {
 
 
     useEffect(() => {
-        let randomIndex = Math.floor(Math.random() * 5)
+        let randomIndex = Math.floor(Math.random() * 5) 
         setSelectedPuzzle(puzzlesAndSolutions[randomIndex][0])
+
+        let tempPuzzleArr = puzzlesAndSolutions[randomIndex][0].split("")
+        //console.log(tempPuzzleArr)
+
+        let tempCellArr = []
+        for (let i=0; i<tempPuzzleArr.length; i++) {
+
+            tempCellArr.push([tempPuzzleArr[i]])
+            
+        }
+        //console.log(tempCellArr)
+        
+        setCellInput(tempCellArr)
     }, [randomMaker])
 
 
@@ -158,7 +171,7 @@ const App = () => {
     
             
                         let sendingData = {
-                            puzzle: selectedPuzzle,
+                            puzzle: cellInput.join(""),
                             coordinate: coordinate,
                             value: value,
                             rawId: rawId
@@ -166,7 +179,7 @@ const App = () => {
             
                         axios.post(`${BASE_URL}/api/check`, sendingData).then(response => {
                             const {data} = response
-                            //console.log(data)
+                            console.log(data)
                             setCheckResult(data)
         
                             let tempObj = JSON.parse(JSON.stringify(allChecks))
@@ -321,6 +334,7 @@ const App = () => {
 
         } else if (name === "raw-square") {
             setIsRawSquare(prevIsRawSquare => !prevIsRawSquare)
+            setSolvedPuzzle("")
 
             if (!isRawSquare) {
                 console.log("zzz")

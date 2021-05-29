@@ -43,12 +43,12 @@ const RawSquare = (props) => {
                     id={`${row}${indexRow}${n}`}
                     onClick={props.data.handleClick}
                     style={{
-                        backgroundColor: selectedCell === `${row}${indexRow}${n}` ? "gray" 
-                        : selectedRaw === row ? "gray" 
-                        : selectedColumn === `${indexRow}` ? "gray"
+                        backgroundColor: selectedCell === `${row}${indexRow}${n}` ? "#dfebf3" 
+                        : selectedRaw === row ? "#dfebf3" 
+                        : selectedColumn === `${indexRow}` ? "#dfebf3"
                         : "",
 
-                        color: customKeys[n] && customKeys[n][0] === true ? "blue" 
+                        color: customKeys[n] && customKeys[n][0] === true ? "304c64" 
                         : ""
                     }}
                     className="cell">
