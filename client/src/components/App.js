@@ -445,7 +445,7 @@ const App = () => {
                             <div className="solve-part">
                                 <button name="solve-me" onClick={handleClick} className="btn solve">Solve Me</button>
 
-                                <button name="unsolve-me" onClick={handleClick}>Unsolve Me</button>
+                                <button name="unsolve-me" onClick={handleClick} className="btn unsolve">Unsolve Me</button>
                             </div>
 
                             <div className="undo-part">
