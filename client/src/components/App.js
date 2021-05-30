@@ -450,9 +450,9 @@ const App = () => {
 
                             <div className="undo-part">
                                 {
-                                    !isRawSquare && <button name="undo" onClick={handleClick}>Undo Moves</button>
+                                    !isRawSquare && <div name="undo" onClick={handleClick} className="btn undo"></div>
                                 }
-                                <button name="clean" onClick={handleClick}>Clean</button>
+                                <div name="clean" onClick={handleClick} className="btn clean"></div>
                             </div>
 
                             <div className="control-part">
