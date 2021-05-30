@@ -110,7 +110,9 @@ td:nth-child(3n) {
     width: 40vw;
     height: 40vw;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: center;
 }
 
 .buttons .solve-part {
@@ -120,13 +122,13 @@ td:nth-child(3n) {
 }
 
 .solve-part .solve, .unsolve {
-    width: 15vw;
+    width: 10vw;
     height: 7vh;
     margin: 15px;
-    border: none;
+    background: none;
+    border: 3px solid #2c4961;
     border-radius: 3px;
-    background-color: #0074e3;
-    color: #ffffff;
+    color: #2c4961;
     font-size: larger;
 }
 
@@ -136,9 +138,9 @@ td:nth-child(3n) {
     align-items: center;
 }
 
-.undo-part .undo, .clean {
-    width: 6vw;
-    height: 6vw;
+.undo-part .undo{
+    width: 3vw;
+    height: 3vw;
     border: none;
     border-radius: 50%;
     background-image: url("./public/undo\ \(1\).png");
@@ -147,8 +149,32 @@ td:nth-child(3n) {
 }
 
 .undo-part .clean {
+    width: 6vw;
+    height: 6vw;
     background-image: url("./public/eraser\ \(2\).png");
     background-size:50%;
     background-position: center;
+    background-repeat: no-repeat;
+    border: none;
+    border-radius: 50%;
+}
+
+.buttons .control-part {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.buttons .control-part .new, .raw {
+    width: 15vw;
+    height: 7vh;
+    margin: 15px;
+    padding: 10px;
+    background: none;
+    border: 3px solid #2c4961;
+    border-radius: 3px;
+    color: #2c4961;
+    font-size: larger;
 }
 

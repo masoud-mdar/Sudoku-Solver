@@ -456,11 +456,11 @@ const App = () => {
                             </div>
 
                             <div className="control-part">
-                                <button name="new-one" onClick={handleClick}>New Game</button>
-                                <button name="raw-square" onClick={handleClick}>
+                                <button name="new-one" onClick={handleClick} className="btn new">New Game</button>
+                                <button name="raw-square" onClick={handleClick} className="btn raw">
                                     {
                                         !isRawSquare ? (
-                                            "custom Sudoku"
+                                            "Custom Sudoku"
                                         ) : (
                                             "Just Play"
                                         )
