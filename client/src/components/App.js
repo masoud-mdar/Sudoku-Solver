@@ -18,34 +18,30 @@ import handleKeyPressFunc from "../logic/handleKeyPressFunc"
 const App = () => {
 
     const [cellInput, setCellInput] = useState([])  // an array of 81 array inputs
-
     const [selectedPuzzle, setSelectedPuzzle] = useState("")
-
     const [selectedCell, setSelectedCell] = useState("")
-
     const [selectedValue, setSelectedValue] = useState("")
-
     const [checkResult, setCheckResult] = useState({})
-
     const [allChecks, setAllChecks] = useState({})
-
     const [solvedPuzzle, setSolvedPuzzle] = useState("")
-
     const [moves, setMoves] = useState([])
 
     const [randomMaker, setRandomMaker] = useState(0)
 
     const [isCleanMode, setIsCleanMode] = useState(false)
-
     const [isRawSquare, setIsRawSquare] = useState(false)
 
     const [customCellInput, setCustomCellInput] = useState({})
-
     const [customKeys, setCustomKeys] = useState([])
 
     const [isLoading, setIsLoading] = useState(false)
 
-
+    const handleKeyPress = (Event) => {
+        const {code} = Event
+        const rawId = selectedCell
+        handleKeyPressFunc(setCheckResult, setIsCleanMode, setSelectedValue, setCellInput, setMoves, setAllChecks, setCustomCellInput, setCustomKeys, code, rawId, isRawSquare, cellInput, selectedPuzzle, moves, selectedCell, axios, BASE_URL, allChecks, customCellInput, customKeys)
+    
+    }
 
     useEffect(() => {
         let tempArr = []
@@ -69,41 +65,23 @@ const App = () => {
         setSelectedPuzzle(puzzlesAndSolutions[randomIndex][0])
 
         let tempPuzzleArr = puzzlesAndSolutions[randomIndex][0].split("")
-        //console.log(tempPuzzleArr)
 
         let tempCellArr = []
         for (let i=0; i<tempPuzzleArr.length; i++) {
 
             tempCellArr.push([tempPuzzleArr[i]])
-            
         }
         
         setCellInput(tempCellArr)
     }, [randomMaker])
 
-
-    const handleKeyPress = (Event) => {
-        const {code} = Event
-        const rawId = selectedCell
-        handleKeyPressFunc(setCheckResult, setIsCleanMode, setSelectedValue, setCellInput, setMoves, setAllChecks, setCustomCellInput, setCustomKeys, code, rawId, isRawSquare, cellInput, selectedPuzzle, moves, selectedCell, axios, BASE_URL, allChecks, customCellInput, customKeys)
-    
-    }
-
-
-
-
     useEffect(() => {
-
-
 
         document.addEventListener("keydown", handleKeyPress)
 
         return () => {document.removeEventListener("keydown", handleKeyPress)}
 
     })
-
-
-    
 
     const handleClick = (Event) => {
         const {name, id, innerHTML} = Event.target
@@ -135,13 +113,7 @@ const App = () => {
         } else {
             cellClickFunc(setSelectedCell, setSelectedValue, setCellInput, setMoves, setCheckResult, setIsCleanMode, setCustomCellInput, setCustomKeys, setAllChecks, id, innerHTML, isCleanMode, isRawSquare, moves, cellInput, allChecks, customCellInput, customKeys)
         }
-
-
-
     }
-
-
-
 
     return (
         <div>
@@ -150,6 +122,7 @@ const App = () => {
                     <div className="container">
                         {
                             !isRawSquare ? (
+
                                 <Square
                                     data={{
                                         handleClick: handleClick,
@@ -162,7 +135,9 @@ const App = () => {
                                         selectedValue: selectedValue
                                     }}
                                 />
+
                             ) : (
+
                                 <RawSquare
                                     data={{
                                         handleClick: handleClick,
@@ -187,6 +162,7 @@ const App = () => {
                     </div>
 
                 ) : (
+                    
                     <div className="loading">
                         <h1>Loading...</h1>
                     </div>
