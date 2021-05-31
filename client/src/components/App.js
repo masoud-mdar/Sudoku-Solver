@@ -5,15 +5,14 @@ import RawSquare from "./RawSquare"
 import Square from "./Square"
 import Buttons from "./Buttons"
 
-import {BASE_URL} from "../utils/constants"
-import {puzzlesAndSolutions} from "../utils/puzzles"
-
-
 import solveFunc from "../logic/solveFunc"
 import newOneFunc from "../logic/newOneFunc"
 import undoFunc from "../logic/undoFunc"
 import cellClickFunc from "../logic/cellClickFunc"
 import handleKeyPressFunc from "../logic/handleKeyPressFunc"
+
+import {BASE_URL} from "../utils/constants"
+import {puzzles} from "../utils/puzzles"
 
 const App = () => {
 
@@ -62,9 +61,9 @@ const App = () => {
 
     useEffect(() => {
         let randomIndex = Math.floor(Math.random() * 5) 
-        setSelectedPuzzle(puzzlesAndSolutions[randomIndex][0])
+        setSelectedPuzzle(puzzles[randomIndex][0])
 
-        let tempPuzzleArr = puzzlesAndSolutions[randomIndex][0].split("")
+        let tempPuzzleArr = puzzles[randomIndex][0].split("")
 
         let tempCellArr = []
         for (let i=0; i<tempPuzzleArr.length; i++) {
@@ -132,7 +131,8 @@ const App = () => {
                                         checkResult: checkResult,
                                         selectedCell: selectedCell,
                                         allChecks: allChecks,
-                                        selectedValue: selectedValue
+                                        selectedValue: selectedValue,
+                                        isCleanMode: isCleanMode
                                     }}
                                 />
 
@@ -162,9 +162,10 @@ const App = () => {
                     </div>
 
                 ) : (
-                    
+
                     <div className="loading">
                         <h1>Loading...</h1>
+                        <div className="loader"></div>
                     </div>
                 )
             }

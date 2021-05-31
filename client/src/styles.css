@@ -112,6 +112,12 @@ td:nth-child(3n) {
     text-align: center;
 }
 
+.btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .buttons {
     width: 40vw;
     height: 40vw;
@@ -128,7 +134,7 @@ td:nth-child(3n) {
 }
 
 .solve-part .solve, .unsolve {
-    width: 10vw;
+    width: 15vw;
     height: 7vh;
     margin: 15px;
     background: none;
@@ -144,7 +150,12 @@ td:nth-child(3n) {
     align-items: center;
 }
 
-.undo-part .undo{
+.undo-part .undo-wrapper {
+    position: relative;
+    margin: 0 25px;
+}
+
+.undo-part .undo-wrapper .undo{
     width: 3vw;
     height: 3vw;
     border: none;
@@ -154,7 +165,28 @@ td:nth-child(3n) {
     background-size: cover;
 }
 
-.undo-part .clean {
+.undo-part .undo-wrapper div {
+    display: none;
+    width: 7vw;
+    height: 3vw;
+    position: absolute;
+    top: -27px;
+    left: -50%;
+    color: #2c4961;
+}
+
+.undo-part .undo-wrapper:hover div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.undo-part .clean-wrapper {
+    position: relative;
+    margin: 0 25px;
+}
+
+.undo-part .clean-wrapper .clean {
     width: 3vw;
     height: 3vw;
     background-image: url("./public/eraser\ \(2\).png");
@@ -163,6 +195,22 @@ td:nth-child(3n) {
     background-repeat: no-repeat;
     border: none;
     border-radius: 50%;
+}
+
+.undo-part .clean-wrapper div {
+    display: none;
+    width: 14vw;
+    height: 3vw;
+    position: absolute;
+    top: -27px;
+    left: -175%;
+    color: #2c4961;
+}
+
+.undo-part .clean-wrapper:hover div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .buttons .control-part {
@@ -184,3 +232,31 @@ td:nth-child(3n) {
     font-size: larger;
 }
 
+.loading {
+    width: 100vw;
+    height: 100vh;
+    background-color: #2c4961;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.loading h1 {
+    color: #faffff;
+}
+
+.loading .loader {
+    width: 70px;
+    height: 70px;
+    margin-top: 20px;
+    border-top: 6px solid orange;
+    border-radius: 50%;
+    animation: spin 2s linear infinite;
+}
+  
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

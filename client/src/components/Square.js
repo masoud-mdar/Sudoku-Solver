@@ -5,7 +5,7 @@ const Square = (props) => {
 
     let tableRow = ["A","B","C","D","E","F","G","H","I"]
 
-    const {selectedPuzzle, cellInput, solvedPuzzle, selectedCell, checkResult, allChecks, selectedValue} = props.data
+    const {selectedPuzzle, cellInput, solvedPuzzle, selectedCell, checkResult, allChecks, selectedValue, isCleanMode} = props.data
     let selectedPuzzleArr = selectedPuzzle.split("")
 
 
@@ -65,7 +65,9 @@ const Square = (props) => {
 
                         color: !solvedPuzzle && allChecks[`${row}${indexRow}${n}`] && !allChecks[`${row}${indexRow}${n}`].valid ? "#fb5365" 
                         : !solvedPuzzle && allChecks[`${row}${indexRow}${n}`] && allChecks[`${row}${indexRow}${n}`].valid ? "#1a91db" 
-                        : "#304c64"
+                        : "#304c64",
+
+                        cursor: isCleanMode ? "grabbing" : ""
                     }}
                     className="cell">
 

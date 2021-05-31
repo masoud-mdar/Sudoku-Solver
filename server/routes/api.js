@@ -85,6 +85,6 @@ module.exports = function (app) {
           res.json(result)
         }
       }
-      console.log(JSON.stringify(res.json()))
+      //console.log(JSON.stringify(res.json()))
     });
 };

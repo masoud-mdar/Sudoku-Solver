@@ -12,9 +12,17 @@ const Buttons = (props) => {
 
             <div className="undo-part">
                 {
-                    !props.data.isRawSquare && <button name="undo" onClick={props.data.handleClick} className="btn undo"></button>
+                    !props.data.isRawSquare && <div className="undo-wrapper">
+                        <button name="undo" onClick={props.data.handleClick} className="btn undo"></button>
+                        <div>Undo Moves</div>
+                    </div>
                 }
-                <button name="clean" onClick={props.data.handleClick} className="btn clean"></button>
+
+                <div className="clean-wrapper">
+                    <button name="clean" onClick={props.data.handleClick} className="btn clean"></button>
+                    <div>Erase a number</div>
+                </div>
+                
             </div>
 
             <div className="control-part">
