@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from "react"
 import axios from "axios"
 
-//import Square from "./Square"
 import RawSquare from "./RawSquare"
 import Square2 from "./Square2"
 
@@ -38,13 +37,6 @@ const App = () => {
 
     const [isLoading, setIsLoading] = useState(false)
 
-    /*useEffect(() => {
-        let tempArr = []
-        for (let i=0; i<81; i++) {
-            tempArr.push([])
-        }
-        setCellInput(tempArr)
-    }, [randomMaker])*/
 
     useEffect(() => {
         let tempArr = []
@@ -76,7 +68,6 @@ const App = () => {
             tempCellArr.push([tempPuzzleArr[i]])
             
         }
-        //console.log(tempCellArr)
         
         setCellInput(tempCellArr)
     }, [randomMaker])
