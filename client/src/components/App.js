@@ -2,10 +2,15 @@ import React, {useState, useEffect} from "react"
 import axios from "axios"
 
 import RawSquare from "./RawSquare"
-import Square2 from "./Square2"
+import Square from "./Square"
+import Buttons from "./Buttons"
 
 import {BASE_URL} from "../utils/constants"
 import {puzzlesAndSolutions} from "../utils/puzzles"
+
+
+import solveFunc from "../logic/solveFunc"
+import newOneFunc from "../logic/newOneFunc"
 
 const App = () => {
 
@@ -235,18 +240,7 @@ const App = () => {
         if (name === "solve-me") {
 
             // adding error response "puzzle can't be solved to isRawSquare part"
-
-            setIsLoading(true)
-            setIsCleanMode(false)
-
-            let puzzle = isRawSquare ? customCellInput.join("") : selectedPuzzle
-
-            axios.post(`${BASE_URL}/api/solve`, {puzzle: puzzle}).then(response => {
-                const {data} = response
-                //console.log(data)
-                setSolvedPuzzle(data.solution)
-                setIsLoading(false)
-            })
+            solveFunc(setIsLoading, setIsCleanMode, isRawSquare, customCellInput, selectedPuzzle, axios, BASE_URL, setSolvedPuzzle)
 
 
 
@@ -255,33 +249,7 @@ const App = () => {
             setIsCleanMode(false)
         } else if (name === "new-one") {
 
-            setSolvedPuzzle("")
-            setSelectedValue("")
-            setSelectedCell("")
-
-            if (!isRawSquare) {
-
-                setSelectedPuzzle("")
-                setAllChecks({})
-                setMoves([])
-                setCellInput([])
-                setIsCleanMode(false)
-                setRandomMaker(prevRandomMaker => prevRandomMaker += 1)
-
-            } else if (isRawSquare) {
-
-                let inputTempArr = []
-                for (let i=0; i<81; i++) {
-                    inputTempArr.push(["."])
-                }
-                setCustomCellInput(inputTempArr)
-
-                let keysTempArr = []
-                for (let i=0; i<81; i++) {
-                    keysTempArr.push([false])
-                }
-                setCustomKeys(keysTempArr)
-            }
+            newOneFunc(setSolvedPuzzle, setSelectedValue, setSelectedCell, setSelectedPuzzle, setAllChecks, setMoves, setCellInput, setIsCleanMode, setRandomMaker, setCustomCellInput, setCustomKeys, isRawSquare)
 
         } else if (name === "undo") {
             console.log("undo")
@@ -407,7 +375,7 @@ const App = () => {
                     <div className="container">
                         {
                             !isRawSquare ? (
-                                <Square2
+                                <Square
                                     data={{
                                         handleClick: handleClick,
                                         cellInput: cellInput,
@@ -433,36 +401,12 @@ const App = () => {
                             )
                         }
 
-                        <div className="buttons">
-                            <div className="solve-part">
-                                <button name="solve-me" onClick={handleClick} className="btn solve">Solve Me</button>
-
-                                <button name="unsolve-me" onClick={handleClick} className="btn unsolve">Unsolve Me</button>
-                            </div>
-
-                            <div className="undo-part">
-                                {
-                                    !isRawSquare && <button name="undo" onClick={handleClick} className="btn undo"></button>
-                                }
-                                <button name="clean" onClick={handleClick} className="btn clean"></button>
-                            </div>
-
-                            <div className="control-part">
-                                <button name="new-one" onClick={handleClick} className="btn new">New Game</button>
-                                <button name="raw-square" onClick={handleClick} className="btn raw">
-                                    {
-                                        !isRawSquare ? (
-                                            "Custom Sudoku"
-                                        ) : (
-                                            "Just Play"
-                                        )
-                                    }
-                                </button>
-                            </div>
-
-
-
-                        </div>
+                        <Buttons
+                            data={{
+                                handleClick: handleClick,
+                                isRawSquare: isRawSquare
+                            }}
+                        />
 
 
                     </div>
