@@ -46,13 +46,13 @@ module.exports = function (app) {
                   obj.valid = false
                   obj.conflict = []
                   if (!x.validation) {
-                    obj.conflict.push("row")
+                    obj.conflict.push("Row")
                   }
                   if (!y.validation) {
-                    obj.conflict.push("column")
+                    obj.conflict.push("Column")
                   }
                   if (!z.validation) {
-                    obj.conflict.push("region")
+                    obj.conflict.push("Region")
                   }
                   res.json(obj)
                 } else {

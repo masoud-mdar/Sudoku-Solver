@@ -8,8 +8,6 @@ const Square = (props) => {
     const {selectedPuzzle, cellInput, solvedPuzzle, selectedCell, checkResult, allChecks, selectedValue} = props.data
     let selectedPuzzleArr = selectedPuzzle.split("")
 
-    console.log(selectedValue)
-
 
     let puzzleIndexArr = selectedPuzzleArr.map(element => {
         return element === "." ? false : true
@@ -43,8 +41,8 @@ const Square = (props) => {
                 <span name="cell" className="table-span">
                     <div className="coordinates">
                         {
-                            allChecks[`${row}${indexRow}${n}`] && allChecks[`${row}${indexRow}${n}`].valid ? `${row}${indexRow}`
-                            : allChecks[`${row}${indexRow}${n}`] && !allChecks[`${row}${indexRow}${n}`].valid && allChecks[`${row}${indexRow}${n}`].conflict ? <ul>{allChecks[`${row}${indexRow}${n}`].conflict.map(element => <li key={element}>{element}</li>)}</ul>
+                            /*allChecks[`${row}${indexRow}${n}`] && allChecks[`${row}${indexRow}${n}`].valid ? `${row}${indexRow}`*/
+                            allChecks[`${row}${indexRow}${n}`] && !allChecks[`${row}${indexRow}${n}`].valid && allChecks[`${row}${indexRow}${n}`].conflict ? <ul>{allChecks[`${row}${indexRow}${n}`].conflict.map(element => <li key={element}>{element}</li>)}</ul>
                             : ""
                         }
                     </div>

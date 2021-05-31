@@ -293,6 +293,7 @@ const App = () => {
             }
 
         } else if (name === "undo") {
+            console.log("undo")
             setIsCleanMode(false)
 
             if (moves.length >= 1 && !isRawSquare) {
@@ -359,7 +360,7 @@ const App = () => {
 
                 let inputIndex = id.split("").slice(2).join("")
 
-                tempInputArr.splice(inputIndex, 1, [])
+                tempInputArr.splice(inputIndex, 1, ["."])
                 setCellInput(tempInputArr)
                 
 
@@ -450,9 +451,9 @@ const App = () => {
 
                             <div className="undo-part">
                                 {
-                                    !isRawSquare && <div name="undo" onClick={handleClick} className="btn undo"></div>
+                                    !isRawSquare && <button name="undo" onClick={handleClick} className="btn undo"></button>
                                 }
-                                <div name="clean" onClick={handleClick} className="btn clean"></div>
+                                <button name="clean" onClick={handleClick} className="btn clean"></button>
                             </div>
 
                             <div className="control-part">
