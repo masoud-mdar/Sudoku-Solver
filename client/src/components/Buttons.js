@@ -1,7 +1,8 @@
 import React from "react"
 
 const Buttons = (props) => {
-    const {puzzleError} = props.data
+    const {puzzleError, isCleanMode} = props.data
+    const styles = {"border": "1px solid crimson"}
 
     return (
         <div className="buttons">
@@ -27,7 +28,12 @@ const Buttons = (props) => {
                 }
 
                 <div className="clean-wrapper">
-                    <button name="clean" onClick={props.data.handleClick} className="btn clean"></button>
+                    <button 
+                    name="clean" 
+                    onClick={props.data.handleClick} 
+                    className="btn clean"
+                    style={isCleanMode ? styles : {}}
+                    ></button>
                     <div>Erase a number</div>
                 </div>
                 

@@ -105,7 +105,7 @@ const App = () => {
 
         } else if (name === "clean") {
 
-            setIsCleanMode(true)
+            setIsCleanMode(prevIsCleanMode => !prevIsCleanMode)
 
         } else if (name === "raw-square") {
             setIsRawSquare(prevIsRawSquare => !prevIsRawSquare)
@@ -159,7 +159,8 @@ const App = () => {
                             data={{
                                 handleClick: handleClick,
                                 isRawSquare: isRawSquare,
-                                puzzleError: puzzleError
+                                puzzleError: puzzleError,
+                                isCleanMode: isCleanMode
                             }}
                         />
 

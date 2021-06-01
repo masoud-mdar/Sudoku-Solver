@@ -1,10 +1,16 @@
 /*<div>Icons made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>*/
 /*<div>Icons made by <a href="https://www.flaticon.com/authors/icongeek26" title="Icongeek26">Icongeek26</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>*/
 /*<div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>*/
+
+@import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=KoHo:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap');
+
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    font-family: "Itim";
 }
 
 button {
@@ -67,6 +73,7 @@ td:nth-child(3n) {
     outline: none;
     background: none;
     text-align: center;
+    font-family: "KoHo";
     font-size: 26px;
     cursor:default;
 }
@@ -230,6 +237,10 @@ td:nth-child(3n) {
     border-radius: 3px;
     color: #2c4961;
     font-size: larger;
+}
+
+.puzzle-error h1 {
+    color: #2c4961;
 }
 
 .loading {
