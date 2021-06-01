@@ -291,7 +291,7 @@ class SudokuSolver {
       })
   
       if (unvalid) {
-        return {error: 'Puzzle cannot be solved'}
+        return {"error": 'Puzzle cannot be solved'}
       }
   
       // now we find:

@@ -1,8 +1,9 @@
-const newOneFunc = (setSolvedPuzzle, setSelectedValue, setSelectedCell, setSelectedPuzzle, setAllChecks, setMoves, setCellInput, setIsCleanMode, setRandomMaker, setCustomCellInput, setCustomKeys, isRawSquare) => {
+const newOneFunc = (setSolvedPuzzle, setSelectedValue, setSelectedCell, setSelectedPuzzle, setAllChecks, setMoves, setCellInput, setIsCleanMode, setRandomMaker, setCustomCellInput, setCustomKeys, setPuzzleError, isRawSquare) => {
 
     setSolvedPuzzle("")
     setSelectedValue("")
     setSelectedCell("")
+    setPuzzleError(false)
 
     if (!isRawSquare) {
 

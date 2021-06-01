@@ -33,6 +33,8 @@ const App = () => {
     const [customCellInput, setCustomCellInput] = useState({})
     const [customKeys, setCustomKeys] = useState([])
 
+    const [puzzleError, setPuzzleError] = useState(false)
+
     const [isLoading, setIsLoading] = useState(false)
 
     const handleKeyPress = (Event) => {
@@ -88,14 +90,15 @@ const App = () => {
         if (name === "solve-me") {
 
             // adding error response "puzzle can't be solved to isRawSquare part"
-            solveFunc(setIsLoading, setIsCleanMode, isRawSquare, customCellInput, selectedPuzzle, axios, BASE_URL, setSolvedPuzzle)
+            solveFunc(setIsLoading, setIsCleanMode, setPuzzleError, isRawSquare, customCellInput, selectedPuzzle, axios, BASE_URL, setSolvedPuzzle)
 
         } else if (name === "unsolve-me") {
             setSolvedPuzzle("")
+            setPuzzleError(false)
             setIsCleanMode(false)
         } else if (name === "new-one") {
 
-            newOneFunc(setSolvedPuzzle, setSelectedValue, setSelectedCell, setSelectedPuzzle, setAllChecks, setMoves, setCellInput, setIsCleanMode, setRandomMaker, setCustomCellInput, setCustomKeys, isRawSquare)
+            newOneFunc(setSolvedPuzzle, setSelectedValue, setSelectedCell, setSelectedPuzzle, setAllChecks, setMoves, setCellInput, setIsCleanMode, setRandomMaker, setCustomCellInput, setCustomKeys, setPuzzleError, isRawSquare)
 
         } else if (name === "undo") {
             undoFunc(setIsCleanMode, setAllChecks, setSelectedCell, setSelectedValue, setMoves, setCellInput, setCheckResult, moves, isRawSquare, cellInput, allChecks)
@@ -107,6 +110,7 @@ const App = () => {
         } else if (name === "raw-square") {
             setIsRawSquare(prevIsRawSquare => !prevIsRawSquare)
             setSolvedPuzzle("")
+            setPuzzleError(false)
             !isRawSquare && setSolvedPuzzle("")
 
         } else {
@@ -145,7 +149,8 @@ const App = () => {
                                         customKeys: customKeys,
                                         solvedPuzzle: solvedPuzzle,
                                         selectedCell: selectedCell,
-                                        selectedValue: selectedValue
+                                        selectedValue: selectedValue,
+                                        puzzleError: puzzleError
                                     }}
                                 />
                             )

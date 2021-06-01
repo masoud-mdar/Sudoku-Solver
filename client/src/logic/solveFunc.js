@@ -1,4 +1,4 @@
-const solveFunc = (setIsLoading, setIsCleanMode, isRawSquare, customCellInput, selectedPuzzle, axios, BASE_URL, setSolvedPuzzle) => {
+const solveFunc = (setIsLoading, setIsCleanMode, setPuzzleError, isRawSquare, customCellInput, selectedPuzzle, axios, BASE_URL, setSolvedPuzzle) => {
     setIsLoading(true)
     setIsCleanMode(false)
     
@@ -6,8 +6,10 @@ const solveFunc = (setIsLoading, setIsCleanMode, isRawSquare, customCellInput, s
     
     axios.post(`${BASE_URL}/api/solve`, {puzzle: puzzle}).then(response => {
         const {data} = response
-        //console.log(data)
-        setSolvedPuzzle(data.solution)
+        console.log(data)
+
+        data.hasOwnProperty("error") ? setPuzzleError(true) : setSolvedPuzzle(data.solution)
+
         setIsLoading(false)
     })
 }
