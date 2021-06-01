@@ -8,7 +8,7 @@ const solveFunc = (setIsLoading, setIsCleanMode, setPuzzleError, isRawSquare, cu
         const {data} = response
         console.log(data)
 
-        data.hasOwnProperty("error") ? setPuzzleError(true) : setSolvedPuzzle(data.solution)
+        data.hasOwnProperty("error") ? setPuzzleError(data.error) : setSolvedPuzzle(data.solution)
 
         setIsLoading(false)
     })

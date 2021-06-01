@@ -33,7 +33,7 @@ const App = () => {
     const [customCellInput, setCustomCellInput] = useState({})
     const [customKeys, setCustomKeys] = useState([])
 
-    const [puzzleError, setPuzzleError] = useState(false)
+    const [puzzleError, setPuzzleError] = useState("")
 
     const [isLoading, setIsLoading] = useState(false)
 
@@ -94,7 +94,7 @@ const App = () => {
 
         } else if (name === "unsolve-me") {
             setSolvedPuzzle("")
-            setPuzzleError(false)
+            setPuzzleError("")
             setIsCleanMode(false)
         } else if (name === "new-one") {
 
@@ -110,7 +110,7 @@ const App = () => {
         } else if (name === "raw-square") {
             setIsRawSquare(prevIsRawSquare => !prevIsRawSquare)
             setSolvedPuzzle("")
-            setPuzzleError(false)
+            setPuzzleError("")
             !isRawSquare && setSolvedPuzzle("")
 
         } else {
@@ -149,8 +149,7 @@ const App = () => {
                                         customKeys: customKeys,
                                         solvedPuzzle: solvedPuzzle,
                                         selectedCell: selectedCell,
-                                        selectedValue: selectedValue,
-                                        puzzleError: puzzleError
+                                        selectedValue: selectedValue
                                     }}
                                 />
                             )
@@ -159,7 +158,8 @@ const App = () => {
                         <Buttons
                             data={{
                                 handleClick: handleClick,
-                                isRawSquare: isRawSquare
+                                isRawSquare: isRawSquare,
+                                puzzleError: puzzleError
                             }}
                         />
 

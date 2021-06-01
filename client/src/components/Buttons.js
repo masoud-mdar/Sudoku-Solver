@@ -1,9 +1,17 @@
 import React from "react"
 
 const Buttons = (props) => {
+    const {puzzleError} = props.data
 
     return (
         <div className="buttons">
+            {
+                puzzleError && (
+                    <div className="puzzle-error">
+                        <h1>{puzzleError}</h1>
+                    </div>
+                )
+            }
             <div className="solve-part">
                 <button name="solve-me" onClick={props.data.handleClick} className="btn solve">Solve Me</button>
 

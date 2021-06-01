@@ -5,9 +5,7 @@ const RawSquare = (props) => {
 
     let tableRow = ["A","B","C","D","E","F","G","H","I"]
 
-    const {customCellInput, solvedPuzzle, selectedCell, customKeys, puzzleError} = props.data
-
-    console.log(puzzleError)
+    const {customCellInput, solvedPuzzle, selectedCell, customKeys} = props.data
 
 
     let selectedColumn

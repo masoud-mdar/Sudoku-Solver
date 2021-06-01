@@ -3,7 +3,7 @@ const newOneFunc = (setSolvedPuzzle, setSelectedValue, setSelectedCell, setSelec
     setSolvedPuzzle("")
     setSelectedValue("")
     setSelectedCell("")
-    setPuzzleError(false)
+    setPuzzleError("")
 
     if (!isRawSquare) {
 
