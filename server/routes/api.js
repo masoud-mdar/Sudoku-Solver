@@ -66,7 +66,6 @@ module.exports = function (app) {
 
     });
 
-    /////////////
     
   app.route('/api/solve')
     .post((req, res) => {
@@ -80,11 +79,9 @@ module.exports = function (app) {
           res.json(validChecker)
         } else {
           let result = solver.solve(puzzle)
-          //console.log(result)
           
           res.json(result)
         }
       }
-      //console.log(JSON.stringify(res.json()))
     });
 };

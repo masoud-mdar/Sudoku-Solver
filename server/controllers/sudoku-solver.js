@@ -26,7 +26,7 @@ class SudokuSolver {
   
     checkRowPlacement(puzzleString, row, column, value) {
       let puzzleArr = puzzleString.split("")
-      //console.log(puzzleArr)
+
       let rowArr = ["A","B","C","D","E","F","G","H","I"]
       let rowIndex = rowArr.indexOf(row)
   
@@ -35,7 +35,7 @@ class SudokuSolver {
       let mainArr = []
       // in mainArr, each child array represents a row
       for (let i=0; i<81; i+=9) {
-        //console.log(i)
+
         let tempArr = puzzleArr.slice(i, i+9)
         mainArr.push(tempArr)
       }
