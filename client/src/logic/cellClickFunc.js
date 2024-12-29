@@ -2,7 +2,7 @@ const cellClickFunc = (setSelectedCell, setSelectedValue, setCellInput, setMoves
 
     setSelectedCell(id)
     setSelectedValue(innerHTML)
-    
+
 
     if (isCleanMode && !isRawSquare) {
 
@@ -13,7 +13,7 @@ const cellClickFunc = (setSelectedCell, setSelectedValue, setCellInput, setMoves
 
         tempInputArr.splice(inputIndex, 1, ["."])
         setCellInput(tempInputArr)
-        
+
 
         let indexInMoves = movesTempArr.findIndex(element => {
             return element.indexOf(id) > -1

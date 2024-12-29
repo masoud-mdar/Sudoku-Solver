@@ -17,13 +17,13 @@ const newOneFunc = (setSolvedPuzzle, setSelectedValue, setSelectedCell, setSelec
     } else if (isRawSquare) {
 
         let inputTempArr = []
-        for (let i=0; i<81; i++) {
+        for (let i = 0; i < 81; i++) {
             inputTempArr.push(["."])
         }
         setCustomCellInput(inputTempArr)
 
         let keysTempArr = []
-        for (let i=0; i<81; i++) {
+        for (let i = 0; i < 81; i++) {
             keysTempArr.push([false])
         }
         setCustomKeys(keysTempArr)

@@ -1,8 +1,8 @@
 import React from "react"
 
 const Buttons = (props) => {
-    const {puzzleError, isCleanMode} = props.data
-    const styles = {"border": "1px solid crimson"}
+    const { puzzleError, isCleanMode } = props.data
+    const styles = { "border": "1px solid crimson" }
 
     return (
         <div className="buttons">
@@ -28,15 +28,15 @@ const Buttons = (props) => {
                 }
 
                 <div className="clean-wrapper">
-                    <button 
-                    name="clean" 
-                    onClick={props.data.handleClick} 
-                    className="btn clean"
-                    style={isCleanMode ? styles : {}}
+                    <button
+                        name="clean"
+                        onClick={props.data.handleClick}
+                        className="btn clean"
+                        style={isCleanMode ? styles : {}}
                     ></button>
                     <div>Erase a number</div>
                 </div>
-                
+
             </div>
 
             <div className="control-part">
